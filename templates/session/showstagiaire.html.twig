@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des stagiaire{% endblock %}
+
+{% block body %}
+    <h1>Liste des stagiaire de la session: {{ session.nameSession }}</h1>
+    {% for stagiaire in session.stagiaires %}
+        <div style="display: flex; flex-direction:column">
+            <span>{{ stagiaire.nom }}&nbsp;{{stagiaire.prenom}}</span>
+            <span> {{ stagiaire.email }} </span>
+        </div>
+        <br>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}detail session{% endblock %}
+
+{% block body %}
+    <h1>programme de la session: {{ session.nameSession }}</h1>
+    {# <a href=" {{path('show_session_stagiaire', {'id': session.id} )}} ">Liste des stagiaire</a> #}
+    {% for programme in session.programmes %}
+        <div style="display: flex; flex-direction:column">
+            <span>{{ programme.module.nameModule }}</span>
+            <span>Nombre de jour:&nbsp;{{programme.nbJour}}</span>
+        </div>
+        <br>
+    {% endfor %}
+    <h2>Personne inscrite</h2>
+    {% for stagiaire in session.stagiaires %}
+    <div style="display: flex; flex-direction:column;">
+        <span> {{stagiaire.nom}}&nbsp;{{stagiaire.prenom}}</span>
+        <a href="{{ path('show_stagiaire', {'id': stagiaire.id}) }}">details</a>
+    </div>
+    <br>
+    {% endfor %}
+    <h2>Personnes non Inscrit</h2>
+    {% for stagiaire in nonInscrits %}
+        <div style="display: flex; flex-direction:column;">
+            <span> {{stagiaire.nom}}&nbsp;{{stagiaire.prenom}}</span>
+            <a href="{{ path('show_stagiaire', {'id': stagiaire.id}) }}">details</a>
+        </div>
+        <br>
+    {% endfor %}
+
+{% endblock %}

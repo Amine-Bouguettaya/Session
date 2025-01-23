@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}detail formation{% endblock %}
+
+{% block body %}
+    <h1>Liste des sessions de la formation: {{ formation.nameFormation }}</h1>
+    {% for session in formation.sessions %}
+        <div style="display: flex; flex-direction:column">
+            <span> {{ session.nameSession }} </span>
+            <span>Nombre de place: {{ session.nbPlace }}</span>
+            <a href=" {{ path('show_session', {'id': session.id}) }} " style="text-decoration: none;">&nbsp;Voir plus</a>
+        </div>
+        <br>
+    {% endfor %}
+
+{% endblock %}

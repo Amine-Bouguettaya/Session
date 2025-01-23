@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}sessions{% endblock %}
+
+{% block body %}
+<h1>Liste des sessions</h1>
+{% for session in sessions %}
+    <div style="display: flex; flex-direction:row">
+        <span> {{ session.nameSession }} </span>
+        <a href=" {{ path('show_formation', {'id': session.id}) }} " style="text-decoration: none;">&nbsp;Voir plus</a>
+    </div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}detail stagiaire{% endblock %}
+
+{% block body %}
+
+<div style="display: flex; flex-direction:column;">
+    <span> {{stagiaire.nom}} </span>
+    <span> {{stagiaire.prenom}} </span>
+    <span> {{stagiaire.email}} </span>
+    <span> {{stagiaire.civilite}} </span>
+    <span> {{stagiaire.adresse}} </span>
+    <span> {{stagiaire.cp}} </span>
+    <span> {{stagiaire.ville}} </span>
+    <span> {{stagiaire.telephone}} </span>
+</div>
+
+{% endblock %}

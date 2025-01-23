@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formations{% endblock %}
+
+{% block body %}
+    <h1>Liste des formations</h1>
+    {% for formation in formations %}
+        <div style="display: flex; flex-direction:row">
+            <span> {{ formation.nameFormation }} </span>
+            <a href=" {{ path('show_formation', {'id': formation.id}) }} " style="text-decoration: none;">&nbsp;Voir plus</a>
+        </div>
+    {% endfor %}
+
+{% endblock %}

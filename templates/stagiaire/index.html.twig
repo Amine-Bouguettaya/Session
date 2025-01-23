@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StagiaireController!{% endblock %}
+
+{% block body %}
+    {% for stagiaire in stagiaires %}
+        <div style="display: flex; flex-direction:column">
+            <span> {{stagiaire.nom}}&nbsp;{{stagiaire.prenom}}</span>
+            <span>{{stagiaire.email}}</span>
+            <a href="{{ path('show_stagiaire', {'id': stagiaire.id}) }}">details</a>
+        </div>
+        <br>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detail Category{% endblock %}
+
+{% block body %}
+
+    <a href=" {{ path('edit_category', {'id': category.id}) }} ">Modifier Categorie</a>
+
+    <h1>Liste des modules de la categorie: {{ category.namecategory }} </h1>
+    {% for module in category.modules %}
+        <span> {{ module.nameModule }} </span><br>
+    {% endfor %}
+
+{% endblock %}
