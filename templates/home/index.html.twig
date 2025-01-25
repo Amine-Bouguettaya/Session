@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Acceuil{% endblock %}
+
+{% block body %}
+    <h1>Session passé</h1>
+    {% for session in pastsessions %}
+        <div style="display: flex; flex-direction:column;">
+            <span> {{ session.nameSession }} </span>
+            <span>date de début:&nbsp;{{ session.dateDebut|date('d/m/Y') }} </span>
+            <span>date de fin:&nbsp;{{ session.dateFin|date('d/m/Y') }} </span>
+            <span>nombre de place:&nbsp;{{ session.nbPlace }} </span>
+        </div>
+        <br>
+    {% endfor %}
+    <br>
+    <h1>Session en cours</h1>
+    {% for session in currentsessions %}
+        <div style="display: flex; flex-direction:column;">
+            <span> {{ session.nameSession }} </span>
+            <span>date de début:&nbsp;{{ session.dateDebut|date('d/m/Y') }} </span>
+            <span>date de fin:&nbsp;{{ session.dateFin|date('d/m/Y') }} </span>
+            <span>nombre de place:&nbsp;{{ session.nbPlace }} </span>
+        </div>
+        <br>
+    {% endfor %}
+    <br>
+    <h1>Session à venir</h1>
+    {% for session in comingsessions %}
+        <div style="display: flex; flex-direction:column;">
+            <span> {{ session.nameSession }} </span>
+            <span>date de début:&nbsp;{{ session.dateDebut|date('d/m/Y') }} </span>
+            <span>date de fin:&nbsp;{{ session.dateFin|date('d/m/Y') }} </span>
+            <span>nombre de place:&nbsp;{{ session.nbPlace }} </span>
+        </div>
+        <br>
+    {% endfor %}
+{% endblock %}

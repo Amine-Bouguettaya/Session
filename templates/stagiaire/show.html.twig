@@ -4,6 +4,8 @@
 
 {% block body %}
 
+<a href=" {{ path('edit_stagiaire', {'id': stagiaire.id}) }} ">Modifier</a>
+
 <div style="display: flex; flex-direction:column;">
     <span> {{stagiaire.nom}} </span>
     <span> {{stagiaire.prenom}} </span>
@@ -14,5 +16,15 @@
     <span> {{stagiaire.ville}} </span>
     <span> {{stagiaire.telephone}} </span>
 </div>
-
+<br>
+<br>
+<h1>Liste des sessions</h1>
+    {% for session in stagiaire.sessions %}
+        <div style="display: flex; flex-direction:column;">
+            <span> {{ session.nameSession }} </span>
+            <span> {{ session.dateDebut|date('d/m/Y') }} </span>
+            <span> {{ session.dateFin|date('d/m/Y') }} </span>
+            <span> {{ session.nbPlace }} </span>
+        </div>
+    {% endfor %}
 {% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une mdodule à la categorie: {{category.nameCategory}} {% endblock %}
+
+{% block body %}
+    <h1>Ajouter un module à la categorie: {{category.nameCategory}}</h1>
+    {{ form(formAddModule) }}
+
+{% endblock %}

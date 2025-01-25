@@ -10,5 +10,7 @@
     {% for module in category.modules %}
         <span> {{ module.nameModule }} </span><br>
     {% endfor %}
+    
+    <a href=" {{ path('add_module', {'id': category.id}) }} ">Ajouter un module</a>
 
 {% endblock %}

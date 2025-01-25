@@ -4,27 +4,53 @@
 
 {% block body %}
     <h1>programme de la session: {{ session.nameSession }}</h1>
+
+    {% for label, messages in app.flashes %}
+        <div class="flash-{{ label }}">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
     {# <a href=" {{path('show_session_stagiaire', {'id': session.id} )}} ">Liste des stagiaire</a> #}
     {% for programme in session.programmes %}
         <div style="display: flex; flex-direction:column">
             <span>{{ programme.module.nameModule }}</span>
             <span>Nombre de jour:&nbsp;{{programme.nbJour}}</span>
+            <a href="{{ path('deletemodulefromsession', {'id': programme.id}) }}">Supprimer</a>
         </div>
         <br>
     {% endfor %}
+
+    <h2>Ajouter un module</h2>
+    <form action="{{ path('addmoduletosession', {'id': session.id}) }}" method="post">
+        <label for="nbJour">Nombre de jour</label>
+        <input type="text" name="nbJour" placeholder="Nombre de jour">
+        <label for="moduleId">Module</label>
+        <select name="moduleId">
+            {% for module in modulesnotinsession %}
+                <option value="{{ module.id }}">{{ module.nameModule }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Ajouter</button>
+
     <h2>Personne inscrite</h2>
     {% for stagiaire in session.stagiaires %}
     <div style="display: flex; flex-direction:column;">
         <span> {{stagiaire.nom}}&nbsp;{{stagiaire.prenom}}</span>
         <a href="{{ path('show_stagiaire', {'id': stagiaire.id}) }}">details</a>
+        <a href="{{ path('deletestagiairefromsession', {'sessionid': session.id, 'stagiaireid': stagiaire.id}) }}">Supprimer</a>
     </div>
     <br>
     {% endfor %}
+
     <h2>Personnes non Inscrit</h2>
     {% for stagiaire in nonInscrits %}
         <div style="display: flex; flex-direction:column;">
             <span> {{stagiaire.nom}}&nbsp;{{stagiaire.prenom}}</span>
             <a href="{{ path('show_stagiaire', {'id': stagiaire.id}) }}">details</a>
+            <a href="{{ path('addstagiairetosession', {'sessionid': session.id, 'stagiaireid': stagiaire.id}) }}">Ajouter</a>
         </div>
         <br>
     {% endfor %}

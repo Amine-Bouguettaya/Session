@@ -7,8 +7,10 @@
     {% for formation in formations %}
         <div style="display: flex; flex-direction:row">
             <span> {{ formation.nameFormation }} </span>
+            <a href=" {{ path('edit_formation', {'id': formation.id}) }} " style="text-decoration: none;">&nbsp;Modifier</a>
             <a href=" {{ path('show_formation', {'id': formation.id}) }} " style="text-decoration: none;">&nbsp;Voir plus</a>
         </div>
     {% endfor %}
-
+<br>
+    <a href=" {{ path('new_formation') }} ">Ajouter une Formation</a>
 {% endblock %}

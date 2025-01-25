@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Module;
 use App\Entity\Category;
+use App\Form\ModuleType;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,6 +23,29 @@ final class CategoryController extends AbstractController
 
         return $this->render('category/index.html.twig', [
             'categories' => $categories,
+        ]);
+    }
+
+    #[Route('/category/{id}/addModule', name: 'add_module')]
+    public function addModule(Category $category, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $module = new Module();
+        $form = $this->createForm(ModuleType::class, $module);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $module = $form->getData();
+            $category->addModule($module);
+
+            $entityManager->persist($module);
+            $entityManager->flush();
+            return $this->redirectToRoute('show_category', ['id' => $category->getId()]);
+        }
+
+        return $this->render('category/addModule.html.twig', [
+            'formAddModule' => $form,
+            'category' => $category,
         ]);
     }
 

@@ -3,6 +3,9 @@
 {% block title %}Hello StagiaireController!{% endblock %}
 
 {% block body %}
+<a href=" {{ path('new_stagiaire') }} ">Ajouter un stagiaire</a>
+    <h1>Stagiaires</h1>
+    <br>
     {% for stagiaire in stagiaires %}
         <div style="display: flex; flex-direction:column">
             <span> {{stagiaire.nom}}&nbsp;{{stagiaire.prenom}}</span>

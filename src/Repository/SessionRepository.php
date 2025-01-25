@@ -67,4 +67,77 @@ class SessionRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function findPastSessions()
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('s')
+        ->from('App\Entity\Session', 's')
+        ->where('s.dateFin < :date')
+        ->setParameter('date', new \DateTime('now'))
+        ->orderBy('s.dateDebut', 'DESC');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findCurrentSessions()
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('s')
+        ->from('App\Entity\Session', 's')
+        ->where('s.dateDebut <= :date')
+        ->andWhere('s.dateFin >= :date')
+        ->setParameter('date', new \DateTime('now'))
+        ->orderBy('s.dateDebut', 'ASC');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findComingSessions()
+    {
+        $em = $this->getEntityManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('s')
+        ->from('App\Entity\Session', 's')
+        ->where('s.dateDebut > :date')
+        ->setParameter('date', new \DateTime('now'))
+        ->orderBy('s.dateDebut', 'ASC');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findModulesNotInSession($session_id)
+    {
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
+
+        $qb = $sub;
+        //selection tout les modules d'une session dont l'id est passé en paramètre
+        $qb->select('m')
+        ->from('App\Entity\Module', 'm')
+        ->leftJoin('m.programmes', 'p')
+        ->where('p.session = :id');
+
+        $sub = $em->createQueryBuilder();
+
+        $sub->select('mo')
+        ->from('App\Entity\Module', 'mo')
+        ->where($sub->expr()->notIn('mo.id', $qb->getDQL()))
+        ->setParameter('id', $session_id);
+
+        $query = $sub->getQuery();
+
+        return $query->getResult();
+    }
 }
