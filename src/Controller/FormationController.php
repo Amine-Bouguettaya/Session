@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Session;
 use App\Entity\Formation;
+use App\Form\SessionType;
 use App\Form\FormationType;
 use App\Repository\FormationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,10 +53,30 @@ final class FormationController extends AbstractController
     }
 
     #[Route('/formation/{id}', name: 'show_formation')]
-    public function show(Formation $formation): Response
+    public function show(Formation $formation, Request $request, EntityManagerInterface $entityManager): Response
     {
+
+        $session = new Session();
+
+        $form = $this->createForm(SessionType::class, $session);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $session = $form->getData();
+
+            $session->setFormation($formation);
+
+            $entityManager->persist($session);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('show_formation', ['id' => $formation->getId()]);
+        }
+
+
         return $this->render('formation/show.html.twig', [
             'formation' => $formation,
+            'form' => $form,
         ]); 
     }
 }
