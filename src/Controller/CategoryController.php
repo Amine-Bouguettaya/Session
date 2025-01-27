@@ -26,6 +26,15 @@ final class CategoryController extends AbstractController
         ]);
     }
 
+    #[Route('/category/delete/{id}', name: 'delete_category')]
+    public function deleteCategory(Category $category, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($category);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_category');
+    }
+
     #[Route('/category/{id}/addModule', name: 'add_module')]
     public function addModule(Category $category, Request $request, EntityManagerInterface $entityManager): Response
     {

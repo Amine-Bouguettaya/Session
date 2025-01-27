@@ -11,6 +11,8 @@
             <span> {{stagiaire.nom}}&nbsp;{{stagiaire.prenom}}</span>
             <span>{{stagiaire.email}}</span>
             <a href="{{ path('show_stagiaire', {'id': stagiaire.id}) }}">details</a>
+            <a href="{{ path('edit_stagiaire', {'id': stagiaire.id}) }}">modifier</a>
+            <a href="{{ path('delete_stagiaire', {'id': stagiaire.id}) }}">supprimer</a>
         </div>
         <br>
     {% endfor %}

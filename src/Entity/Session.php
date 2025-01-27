@@ -31,7 +31,7 @@ class Session
     /**
      * @var Collection<int, Programme>
      */
-    #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'session')]
+    #[ORM\OneToMany(targetEntity: Programme::class, mappedBy: 'session', cascade: ['remove'])]
     private Collection $programmes;
 
     #[ORM\ManyToOne(inversedBy: 'sessions')]
@@ -40,7 +40,7 @@ class Session
     /**
      * @var Collection<int, Stagiaire>
      */
-    #[ORM\ManyToMany(targetEntity: Stagiaire::class, inversedBy: 'sessions')]
+    #[ORM\ManyToMany(targetEntity: Stagiaire::class, inversedBy: 'sessions', cascade: ['persist'])]
     private Collection $stagiaires;
 
     public function __construct()
@@ -166,5 +166,10 @@ class Session
         $this->stagiaires->removeElement($stagiaire);
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nameSession;
     }
 }

@@ -40,7 +40,7 @@
     <div style="display: flex; flex-direction:column;">
         <span> {{stagiaire.nom}}&nbsp;{{stagiaire.prenom}}</span>
         <a href="{{ path('show_stagiaire', {'id': stagiaire.id}) }}">details</a>
-        <a href="{{ path('deletestagiairefromsession', {'sessionid': session.id, 'stagiaireid': stagiaire.id}) }}">Supprimer</a>
+        <a href="{{ path('deletestagiairefromsession', {'session': session.id, 'stagiaire': stagiaire.id}) }}">Supprimer</a>
     </div>
     <br>
     {% endfor %}
@@ -50,7 +50,7 @@
         <div style="display: flex; flex-direction:column;">
             <span> {{stagiaire.nom}}&nbsp;{{stagiaire.prenom}}</span>
             <a href="{{ path('show_stagiaire', {'id': stagiaire.id}) }}">details</a>
-            <a href="{{ path('addstagiairetosession', {'sessionid': session.id, 'stagiaireid': stagiaire.id}) }}">Ajouter</a>
+            <a href="{{ path('addstagiairetosession', {'session': session.id, 'stagiaire': stagiaire.id}) }}">Ajouter</a>
         </div>
         <br>
     {% endfor %}

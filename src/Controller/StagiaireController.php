@@ -22,6 +22,15 @@ final class StagiaireController extends AbstractController
         ]);
     }
 
+    #[Route('/stagiaire/delete/{id}', name: 'delete_stagiaire')]
+    public function deleteStagiaire(Stagiaire $stagiaire, EntityManagerInterface $entityManager): Response
+    {
+        $entityManager->remove($stagiaire);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_stagiaire');
+    }
+
     #[Route('/stagiaire/new', name:'new_stagiaire')]
     #[Route('/stagiaire/{id}/edit', name: 'edit_stagiaire')]
     public function newedit(Stagiaire $stagiaire = null, Request $request, EntityManagerInterface $entityManager):Response

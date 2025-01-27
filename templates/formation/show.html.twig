@@ -9,6 +9,7 @@
             <span> {{ session.nameSession }} </span>
             <span>Nombre de place: {{ session.nbPlace }}</span>
             <a href=" {{ path('show_session', {'id': session.id}) }} " style="text-decoration: none;">&nbsp;Voir plus</a>
+            <a href=" {{ path('delete_session', {'id': session.id}) }} " style="text-decoration: none;">&nbsp;Supprimer</a>
         </div>
         <br>
     {% endfor %}

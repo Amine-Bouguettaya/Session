@@ -8,8 +8,10 @@
     {% for category in categories %}
         <div style="display: flex; flex-direction:row">
             <span> {{ category.nameCategory }} </span>
+            <a href=" {{ path('delete_category', {'id': category.id}) }} " style="text-decoration: none;">&nbsp;Supprimer</a>
             <a href=" {{ path('show_category', {'id': category.id}) }} " style="text-decoration: none;">&nbsp;Voir plus</a>
         </div>
+        <br>
     {% endfor %}
         <a href=" {{ path('new_category') }} ">Ajouter une Categorie</a>
 {% endblock %}

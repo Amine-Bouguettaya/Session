@@ -26,7 +26,7 @@ final class SessionController extends AbstractController
         ]);
     }
 
-    #[Route('/session/{sessionid}/deleteStagiaire/{stagiaireid}', name: 'deletestagiairefromsession')]
+    #[Route('/session/deleteStagiaire/{session}/{stagiaire}', name: 'deletestagiairefromsession')]
     public function deleteStagiaireFromSession(Stagiaire $stagiaire, Session $session, Request $request, EntityManagerInterface $entityManager): Response
     {
         $session->removeStagiaire($stagiaire);
@@ -47,7 +47,7 @@ final class SessionController extends AbstractController
         return $this->redirectToRoute('show_session', ['id' => $sessionid]);
     }
 
-    #[Route('/session/addStagiaire/{sessionid}/{stagiaireid}', name: 'addstagiairetosession')]
+    #[Route('/session/addStagiaire/{session}/{stagiaire}', name: 'addstagiairetosession')]
     public function addStagiaireToSession(Session $session, Stagiaire $stagiaire, Request $request, EntityManagerInterface $entityManager): Response
     {
 
@@ -59,8 +59,28 @@ final class SessionController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('show_session', ['id' => $sessionId]);
+        return $this->redirectToRoute('show_session', ['id' => $session->getId()]);
     }
+
+    private function checkDate(Session $session, Stagiaire $stagiaire)
+    {
+
+        if (count($stagiaire->getSessions()) == 0) {
+            return false;
+        }
+
+        foreach ($stagiaire->getSessions() as $existingSession) {
+            if (
+                ($session->getDateDebut() >= $existingSession->getDateDebut() && $session->getDateDebut() <= $existingSession->getDateFin()) ||
+                ($session->getDateFin() >= $existingSession->getDateDebut() && $session->getDateFin() <= $existingSession->getDateFin()) ||
+                ($session->getDateDebut() <= $existingSession->getDateDebut() && $session->getDateFin() >= $existingSession->getDateFin())
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     #[Route('/session/{id}/addModule', name: 'addmoduletosession')]
     public function addModuleToSession(Session $session, Request $request, EntityManagerInterface $entityManager): Response
@@ -83,20 +103,6 @@ final class SessionController extends AbstractController
         return $this->redirectToRoute('show_session', ['id' => $session->getId()]);
     }
 
-    private function checkDate(Session $session, Stagiaire $stagiaire): bool
-    {
-        foreach ($stagiaire->getSessions() as $existingSession) {
-            if (
-                ($session->getDateDebut() >= $existingSession->getDateDebut() && $session->getDateDebut() <= $existingSession->getDateFin()) ||
-                ($session->getDateFin() >= $existingSession->getDateDebut() && $session->getDateFin() <= $existingSession->getDateFin()) ||
-                ($session->getDateDebut() <= $existingSession->getDateDebut() && $session->getDateFin() >= $existingSession->getDateFin())
-            ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     #[Route('/session/{id}', name:'show_session')]
     public function show(Session $session, EntityManagerInterface $entityManager): Response
     {
@@ -108,5 +114,16 @@ final class SessionController extends AbstractController
             'nonInscrits' => $nonInscrits,
             'modulesnotinsession' => $modulesnotinsession,
         ]);
+    }
+
+    #[Route('/session/{id}/delete', name: 'delete_session')]
+    public function deleteSession(Session $session, EntityManagerInterface $entityManager): Response
+    {
+        $formationId = $session->getFormation()->getId();
+
+        $entityManager->remove($session);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('show_formation', ['id' => $formationId]);
     }
 }

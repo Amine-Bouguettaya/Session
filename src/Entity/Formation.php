@@ -21,7 +21,7 @@ class Formation
     /**
      * @var Collection<int, Session>
      */
-    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'formation')]
+    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'formation', cascade: ['remove'])]
     private Collection $sessions;
 
     public function __construct()
