@@ -26,7 +26,7 @@
     <h2>Ajouter un module</h2>
     <form action="{{ path('addmoduletosession', {'id': session.id}) }}" method="post">
         <label for="nbJour">Nombre de jour</label>
-        <input type="text" name="nbJour" placeholder="Nombre de jour">
+        <input type="number" min="1" name="nbJour" placeholder="Nombre de jour">
         <label for="moduleId">Module</label>
         <select name="moduleId">
             {% for module in modulesnotinsession %}

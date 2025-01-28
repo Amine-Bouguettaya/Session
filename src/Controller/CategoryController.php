@@ -85,8 +85,14 @@ final class CategoryController extends AbstractController
     }
 
     #[Route('/category/{id}', name: 'show_category')]
-    public function show(Category $category): Response
+    public function show($id, EntityManagerInterface $entityManager): Response
     {
+        $category = $entityManager->getRepository(Category::class)->find($id);
+
+        if ($category == null) {
+            return $this->redirectToRoute('app_category');
+        }
+
         return $this->render('category/show.html.twig', [
             'category' => $category,
         ]); 

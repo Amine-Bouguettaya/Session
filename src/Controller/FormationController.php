@@ -62,8 +62,13 @@ final class FormationController extends AbstractController
     }
 
     #[Route('/formation/{id}', name: 'show_formation')]
-    public function show(Formation $formation, Request $request, EntityManagerInterface $entityManager): Response
+    public function show($id, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $formation = $entityManager->getRepository(Formation::class)->find($id);
+
+        if ($formation == null) {
+            return $this->redirectToRoute('app_formation');
+        }
 
         $session = new Session();
 

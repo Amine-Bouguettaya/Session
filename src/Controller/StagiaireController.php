@@ -58,8 +58,14 @@ final class StagiaireController extends AbstractController
     }
 
     #[Route('/stagiaire/{id}', name:'show_stagiaire')]
-    public function show(Stagiaire $stagiaire): Response
+    public function show($id, EntityManagerInterface $entityManager): Response
     {
+        $stagiaire = $entityManager->getRepository(Stagiaire::class)->find($id);
+
+        if (!$stagiaire) {
+            return $this->redirectToRoute('app_stagiaire');
+        }
+
         return $this->render('stagiaire/show.html.twig', [
             'stagiaire' => $stagiaire,
         ]);

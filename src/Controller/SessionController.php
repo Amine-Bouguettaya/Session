@@ -50,13 +50,16 @@ final class SessionController extends AbstractController
     #[Route('/session/addStagiaire/{session}/{stagiaire}', name: 'addstagiairetosession')]
     public function addStagiaireToSession(Session $session, Stagiaire $stagiaire, Request $request, EntityManagerInterface $entityManager): Response
     {
-
-        if ($this->checkDate($session, $stagiaire)) {
-            $this->addFlash('error', 'Le stagiaire est déjà inscrit à une session qui se chevauche avec celle-ci');
+        if (count($session->getStagiaires()) >= $session->getNbPlace()) {
+            $this->addFlash('error', 'La session est complète');
         } else {
-            $session->addStagiaire($stagiaire);
-            $entityManager->persist($session);
-            $entityManager->flush();
+            if ($this->checkDate($session, $stagiaire)) {
+                $this->addFlash('error', 'Le stagiaire est déjà inscrit à une session qui se chevauche avec celle-ci');
+            } else {
+                $session->addStagiaire($stagiaire);
+                $entityManager->persist($session);
+                $entityManager->flush();
+            }
         }
 
         return $this->redirectToRoute('show_session', ['id' => $session->getId()]);
@@ -89,7 +92,7 @@ final class SessionController extends AbstractController
         $nbJour = $request->request->get('nbJour');
         $module = $entityManager->getRepository(Module::class)->find($moduleId);
 
-        if ($module) {
+        if ($module && ($nbJour > 0) && ($nbJour <= $this->getSessionDuration($session) - $this->getSessionNbJourTotal($session))) {
             $programme = new Programme();
             $programme->setNbJour($nbJour);
             $session->addProgramme($programme);
@@ -98,14 +101,39 @@ final class SessionController extends AbstractController
             $entityManager->persist($module);
             $entityManager->persist($programme);
             $entityManager->flush();
+        } else {
+            $this->addFlash('error', 'Erreur lors de l\'ajout du module');
         }
 
         return $this->redirectToRoute('show_session', ['id' => $session->getId()]);
     }
 
-    #[Route('/session/{id}', name:'show_session')]
-    public function show(Session $session, EntityManagerInterface $entityManager): Response
+    public function getSessionNbJourTotal(Session $session)
     {
+        $nbJourTotal = 0;
+        foreach ($session->getProgrammes() as $programme) {
+            $nbJourTotal += $programme->getNbJour();
+        }
+        return $nbJourTotal;
+    }
+
+    public function getSessionDuration(Session $session)
+    {
+        $dateDebut = $session->getDateDebut();
+        $dateFin = $session->getDateFin();
+        $diff = $dateDebut->diff($dateFin);
+        return $diff->days;
+    }
+
+    #[Route('/session/{id}', name:'show_session')]
+    public function show($id, EntityManagerInterface $entityManager): Response
+    {
+        $session = $entityManager->getRepository(Session::class)->find($id);
+
+        if ($session == null) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $nonInscrits = $entityManager->getRepository(Session::class)->findNonInscrits($session->getId());
         $modulesnotinsession = $entityManager->getRepository(Session::class)->findModulesNotInSession($session->getId());
 
