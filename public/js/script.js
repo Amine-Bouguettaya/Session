@@ -5,6 +5,7 @@ tailwind.config = {
             dark_blue: '#37465A',
             light_blue: '#ABB7C5',
             darker_blue: '#292D34',
+            light_gray: '#EDEDED',
             },
             fontFamily: {
                 sans: ['Josefin Sans', 'sans-serif'],

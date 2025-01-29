@@ -3,21 +3,50 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
+<div class="flex flex-grow items-center justify-center m-auto">
+    <div class="flex flex-col items-center justify-center m-auto">
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
+    {% for message in app.flashes('error') %}
+    <div class="text-red-500 bg-red-100 p-2 mb-4 rounded">
+        {{ message }}
+    </div>
+{% endfor %}
 
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
+    {# {{ form_errors(registrationForm) }} #}
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.nom) }}
-        {{ form_row(registrationForm.prenom) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
+    <div class="bg-white p-10 shadow-xl rounded-2xl flex flex-col justify-center items-center w-80 mt-5 mb-10">
+        <h1 class="pb-6 text-2xl font-weight-normal text-[#292D34]">Ajouter un utilisateur</h1>
+        <div class="flex flex-col pb-5">
+            {{ form_label(registrationForm.nom) }}
+            {{ form_widget(registrationForm.nom) }}
+        </div>
+        <div class="flex flex-col pb-5">
+            {{ form_label(registrationForm.prenom) }}
+            {{ form_widget(registrationForm.prenom) }}
+        </div>
+        <div class="flex flex-col pb-5">
+            {{ form_label(registrationForm.email) }}
+            {{ form_widget(registrationForm.email) }}
+        </div>
+        <div class="flex flex-col pb-5">
+            {{form_label(registrationForm.plainPassword.first)}}
+            {{form_widget(registrationForm.plainPassword.first)}}
+        </div>
+        <div class="flex flex-col pb-5">
+            {{form_label(registrationForm.plainPassword.second)}}
+            {{form_widget(registrationForm.plainPassword.second)}}
+        </div>
+        {# <div class="[&>div]:flex [&>div]:flex-col [&>div]:pb-5">
+            {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
-        <button type="submit" class="btn">Register</button>
+        </div> #}
+        <button type="submit" class="px-16 py-2 bg-[#37465A] text-white rounded-md hover:bg-[#33405A]">Ajouter</button>
+    </div>
     {{ form_end(registrationForm) }}
+</div>
+</div>
 {% endblock %}

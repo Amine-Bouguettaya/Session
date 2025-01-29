@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}se Connecter{% endblock %}
 
 {% block body %}
-    <form action="{{ path('app_login') }}" method="post">
+<div class="flex flex-grow items-center justify-center m-auto">
+    <form id="tempo"class="bg-white p-10 shadow-xl rounded-2xl flex flex-col justify-center items-center" action="{{ path('app_login') }}" method="post">
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
@@ -14,13 +15,17 @@
             </div>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="username">Emailllll</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <h1 class="pb-6 text-2xl font-weight-normal text-[#292D34]">Bienvenue !</h1>
+        <div class="flex flex-col pb-5">
+            <label for="username">Email</label>
+            <input class="border border-[#ABB7C5] p-2 rounded-md w-64" type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required autofocus>
+        </div>
+        <div class="flex flex-col pb-8">
+            <label for="password">Password</label>
+            <input class="border border-[#ABB7C5] p-2 rounded-md w-64" type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+        </div>
+        <div class="g-recaptcha" data-sitekey="6Lc7z8YqAAAAAOnvGYZ3vbfnBjG5nmIKhr4WVExX"></div>
+        {# <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"> #}
 
         {#
             Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
@@ -31,9 +36,7 @@
                 <label for="_remember_me">Remember me</label>
             </div>
         #}
-
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
+            <button class="px-8 py-2 bg-[#37465A] mt-8 text-white rounded-md hover:bg-[#33405A]" type="submit">Se connecter</button>
     </form>
+</div>
 {% endblock %}
