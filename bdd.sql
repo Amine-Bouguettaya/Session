@@ -40,14 +40,15 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
--- Listage des données de la table session_amine.doctrine_migration_versions : ~2 rows (environ)
+-- Listage des données de la table session_amine.doctrine_migration_versions : ~5 rows (environ)
 INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
 	('DoctrineMigrations\\Version20250123103639', '2025-01-23 10:36:55', 253),
 	('DoctrineMigrations\\Version20250123104216', '2025-01-23 10:42:20', 11),
 	('DoctrineMigrations\\Version20250127142427', '2025-01-27 14:24:45', 144),
 	('DoctrineMigrations\\Version20250127145449', '2025-01-27 14:55:00', 21),
 	('DoctrineMigrations\\Version20250127145712', '2025-01-27 14:57:17', 9),
-	('DoctrineMigrations\\Version20250127152406', '2025-01-27 15:24:14', 12);
+	('DoctrineMigrations\\Version20250127152406', '2025-01-27 15:24:14', 12),
+	('DoctrineMigrations\\Version20250131083726', '2025-01-31 08:37:37', 99);
 
 -- Listage de la structure de table session_amine. formation
 CREATE TABLE IF NOT EXISTS `formation` (
@@ -56,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `formation` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table session_amine.formation : ~4 rows (environ)
+-- Listage des données de la table session_amine.formation : ~5 rows (environ)
 INSERT INTO `formation` (`id`, `name_formation`) VALUES
 	(1, 'DWWM'),
 	(2, 'Comptable'),
@@ -93,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `module` (
   CONSTRAINT `FK_C24262812469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table session_amine.module : ~6 rows (environ)
+-- Listage des données de la table session_amine.module : ~8 rows (environ)
 INSERT INTO `module` (`id`, `category_id`, `name_module`) VALUES
 	(1, 1, 'Word'),
 	(2, 1, 'Excel'),
@@ -115,9 +116,9 @@ CREATE TABLE IF NOT EXISTS `programme` (
   KEY `IDX_3DDCB9FF613FECDF` (`session_id`),
   CONSTRAINT `FK_3DDCB9FF613FECDF` FOREIGN KEY (`session_id`) REFERENCES `session` (`id`),
   CONSTRAINT `FK_3DDCB9FFAFC2B591` FOREIGN KEY (`module_id`) REFERENCES `module` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table session_amine.programme : ~14 rows (environ)
+-- Listage des données de la table session_amine.programme : ~16 rows (environ)
 INSERT INTO `programme` (`id`, `module_id`, `session_id`, `nb_jour`) VALUES
 	(1, 2, 4, 4),
 	(2, 2, 3, 4),
@@ -134,7 +135,8 @@ INSERT INTO `programme` (`id`, `module_id`, `session_id`, `nb_jour`) VALUES
 	(14, 7, 7, 10),
 	(15, 3, 1, 32),
 	(17, 1, 3, 12),
-	(19, 4, 4, 23);
+	(19, 4, 4, 23),
+	(39, 2, 6, 64);
 
 -- Listage de la structure de table session_amine. session
 CREATE TABLE IF NOT EXISTS `session` (
@@ -144,25 +146,27 @@ CREATE TABLE IF NOT EXISTS `session` (
   `date_debut` datetime NOT NULL,
   `date_fin` datetime NOT NULL,
   `nb_place` int NOT NULL,
+  `formateur_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_D044D5D45200282E` (`formation_id`),
+  KEY `IDX_D044D5D4155D8F51` (`formateur_id`),
+  CONSTRAINT `FK_D044D5D4155D8F51` FOREIGN KEY (`formateur_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_D044D5D45200282E` FOREIGN KEY (`formation_id`) REFERENCES `formation` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table session_amine.session : ~8 rows (environ)
-INSERT INTO `session` (`id`, `formation_id`, `name_session`, `date_debut`, `date_fin`, `nb_place`) VALUES
-	(1, 1, 'DEV WEB Mulhouse Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 10),
-	(2, 1, 'DEV WEB Strasbourg Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 10),
-	(3, 2, 'Comptable Strasbourg Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 8),
-	(4, 2, 'Comptable Mulhouse Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 8),
-	(5, 3, 'RH Mulhouse Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 12),
-	(6, 3, 'RH Strasbourg Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 12),
-	(7, 4, 'CDA Strasbourg Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 14),
-	(8, 4, 'CDA Mulhouse Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 14),
-	(9, 1, 'DEV WEB Mulhouse Fevrier 2024', '2024-02-01 08:30:00', '2024-05-23 17:00:00', 13),
-	(10, 2, 'Comptable Mulhouse Novembre 2024', '2024-01-11 08:30:00', '2025-01-23 17:00:00', 9),
-	(11, 3, 'RH Strasbourg Janvier 2024', '2024-01-01 08:30:00', '2025-04-24 17:00:00', 14),
-	(23, 10, 'dsfds', '2022-01-01 00:00:00', '2022-01-01 00:00:00', 23);
+-- Listage des données de la table session_amine.session : ~11 rows (environ)
+INSERT INTO `session` (`id`, `formation_id`, `name_session`, `date_debut`, `date_fin`, `nb_place`, `formateur_id`) VALUES
+	(1, 1, 'DEV WEB Mulhouse Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 10, 1),
+	(2, 1, 'DEV WEB Strasbourg Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 10, NULL),
+	(3, 2, 'Comptable Strasbourg Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 8, NULL),
+	(4, 2, 'Comptable Mulhouse Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 8, NULL),
+	(5, 3, 'RH Mulhouse Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 12, NULL),
+	(6, 3, 'RH Strasbourg Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 12, 1),
+	(7, 4, 'CDA Strasbourg Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 14, NULL),
+	(8, 4, 'CDA Mulhouse Fevrier 2025', '2025-02-01 08:30:00', '2025-05-23 17:00:00', 14, 10),
+	(9, 1, 'DEV WEB Mulhouse Fevrier 2024', '2024-02-01 08:30:00', '2024-05-23 17:00:00', 13, NULL),
+	(10, 2, 'Comptable Mulhouse Novembre 2024', '2024-01-11 08:30:00', '2025-01-23 17:00:00', 9, NULL),
+	(11, 3, 'RH Strasbourg Janvier 2024', '2024-01-01 08:30:00', '2025-04-24 17:00:00', 14, NULL);
 
 -- Listage de la structure de table session_amine. session_stagiaire
 CREATE TABLE IF NOT EXISTS `session_stagiaire` (
@@ -175,12 +179,20 @@ CREATE TABLE IF NOT EXISTS `session_stagiaire` (
   CONSTRAINT `FK_C80B23BBBA93DD6` FOREIGN KEY (`stagiaire_id`) REFERENCES `stagiaire` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table session_amine.session_stagiaire : ~2 rows (environ)
+-- Listage des données de la table session_amine.session_stagiaire : ~9 rows (environ)
 INSERT INTO `session_stagiaire` (`session_id`, `stagiaire_id`) VALUES
 	(1, 1),
+	(1, 4),
 	(1, 5),
+	(1, 6),
 	(2, 2),
-	(3, 3);
+	(3, 3),
+	(8, 7),
+	(9, 1),
+	(9, 2),
+	(9, 3),
+	(9, 4),
+	(9, 14);
 
 -- Listage de la structure de table session_amine. stagiaire
 CREATE TABLE IF NOT EXISTS `stagiaire` (
@@ -197,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `stagiaire` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table session_amine.stagiaire : ~3 rows (environ)
+-- Listage des données de la table session_amine.stagiaire : ~9 rows (environ)
 INSERT INTO `stagiaire` (`id`, `nom`, `prenom`, `email`, `civilite`, `adresse`, `cp`, `ville`, `telephone`, `avatar`) VALUES
 	(1, 'bouu', 'Amine', 'amine@test.fr', 'M.', '10 rue de la gare', '68100', 'Mulhouse', '0606060606', NULL),
 	(2, 'personne1nom', 'personne1prenom', 'personne@test.fr', 'Mme', '13 rue du Rhin', '68100', 'Mulhouse', '0606060606', NULL),
@@ -220,11 +232,19 @@ CREATE TABLE IF NOT EXISTS `user` (
   `is_verified` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_IDENTIFIER_EMAIL` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table session_amine.user : ~1 rows (environ)
+-- Listage des données de la table session_amine.user : ~9 rows (environ)
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `nom`, `prenom`, `is_verified`) VALUES
-	(1, 'amine@test.fr', '[]', '$2y$13$1iNIqAecuLNiehOr8dHTi.ECcqlhSrbPMLwCW/eYQLAx0k29albBa', 'amine', 'amine', 1);
+	(1, 'amine@test.fr', '["ROLE_FORMATEUR"]', '$2y$13$1iNIqAecuLNiehOr8dHTi.ECcqlhSrbPMLwCW/eYQLAx0k29albBa', 'test', 'aaaa', 1),
+	(2, 'zzz@zzz.fr', '["ROLE_USER"]', '$2y$13$cvPX.B.wtqHdT8X1tKr08OZ.BqwxNgNDrbe14lGfwAFJp8D386Ppa', 'zzz', 'zzz', 0),
+	(3, 'dfdf@fdsf.fr', '["ROLE_USER"]', '$2y$13$5vqSsZb6oSkNVlAe8x5mn.EkCepdNyvHQm3wMSqPasaxkLXIGOYcu', 'bbvb', 'vcxvcxvx', 0),
+	(4, 'aaa@aaa.fr', '["ROLE_USER"]', '$2y$13$9hbXwmMefDc.4OpFXkdIcusCoAr2i6kCtBiXrgqalurg1CBs7hY/W', 'aaa', 'aaa', 0),
+	(7, 'aabba@aaa.fr', '["ROLE_USER"]', '$2y$13$9hbXwmMefDc.4OpFXkdIcusCoAr2i6kCtBiXrgqalurg1CBs7hY/W', 'aaa', 'aaa', 0),
+	(8, 'amine@tesddt.fr', '["ROLE_FORMATEUR"]', '$2y$13$1iNIqAecuLNiehOr8dHTi.ECcqlhSrbPMLwCW/eYQLAx0k29albBa', 'test', 'bbbb', 1),
+	(10, 'amine@tesssddt.fr', '["ROLE_FORMATEUR"]', '$2y$13$1iNIqAecuLNiehOr8dHTi.ECcqlhSrbPMLwCW/eYQLAx0k29albBa', 'test', 'ccccc', 1),
+	(12, 'amine@tesssst.fr', '["ROLE_FORMATEUR"]', '$2y$13$1iNIqAecuLNiehOr8dHTi.ECcqlhSrbPMLwCW/eYQLAx0k29albBa', 'test', 'dddddd', 1),
+	(14, 'amine@tessqqsst.fr', '["ROLE_FORMATEUR"]', '$2y$13$1iNIqAecuLNiehOr8dHTi.ECcqlhSrbPMLwCW/eYQLAx0k29albBa', 'test', 'eeeeee', 1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
