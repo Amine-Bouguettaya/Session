@@ -3,15 +3,20 @@
 {% block title %}Category{% endblock %}
 
 {% block body %}
-    <h1>Liste categorie</h1>
-
-    {% for category in categories %}
-        <div style="display: flex; flex-direction:row">
-            <span> {{ category.nameCategory }} </span>
-            <a href=" {{ path('delete_category', {'id': category.id}) }} " style="text-decoration: none;">&nbsp;Supprimer</a>
-            <a href=" {{ path('show_category', {'id': category.id}) }} " style="text-decoration: none;">&nbsp;Voir plus</a>
+    <div class="flex flex-col m-8">
+        <div class="flex flex-row justify-between items-center">
+            <h1 class="pb-6 text-2xl font-weight-normal text-[#292D34]">Liste categorie</h1>
+            <a href=" {{ path('new_category') }} " class="no-underline text-white bg-[#37465A] rounded-md p-2 my-6">Ajouter une Categorie</a>
         </div>
-        <br>
+    <div class="flex flex-row gap-3">
+    {% for category in categories %}
+        <div class="flex flex-col bg-white rounded-md shadow-md w-64 gap-2 p-2 justify-center text-center">
+            <span> {{ category.nameCategory }} </span>
+            <a href=" {{ path('delete_category', {'id': category.id}) }} " class="no-underline text-center text-white bg-[#37465A] rounded-md m-auto p-2">&nbsp;Supprimer</a>
+            <a href=" {{ path('show_category', {'id': category.id}) }} " class="no-underline text-white text-center bg-[#37465A] rounded-md p-2 m-auto">&nbsp;Voir plus</a>
+        </div>
     {% endfor %}
-        <a href=" {{ path('new_category') }} ">Ajouter une Categorie</a>
+    </div>
+</div>
 {% endblock %}
+

@@ -57,6 +57,14 @@ final class StagiaireController extends AbstractController
         ]);
     }
 
+    #[Route('/stagiaire/search', name:'searchstagiaire')]
+    public function searchStagiaire(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $recherche = $request->request->get('text');
+
+        
+    }
+
     #[Route('/stagiaire/{id}', name:'show_stagiaire')]
     public function show($id, EntityManagerInterface $entityManager): Response
     {

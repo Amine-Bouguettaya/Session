@@ -3,6 +3,7 @@
 {% block title %}detail session{% endblock %}
 
 {% block body %}
+<div class="flex flex-col gap-10 m-8">
     <h1>programme de la session: {{ session.nameSession }}</h1>
 
     {% for label, messages in app.flashes %}
@@ -34,7 +35,7 @@
             {% endfor %}
         </select>
         <button type="submit">Ajouter</button>
-
+    </form>
     <h2>Personne inscrite</h2>
     {% for stagiaire in session.stagiaires %}
     <div style="display: flex; flex-direction:column;">
@@ -54,5 +55,28 @@
         </div>
         <br>
     {% endfor %}
-
+    <div>
+        <span>formateur:&nbsp;{% if session.formateur == null %}
+            pas encore choisi
+        {% else %}
+        {{session.formateur.prenom}}&nbsp;{{session.formateur.nom}}
+        {% endif %}
+    </span>
+    </div>
+    <div>
+        {% if formateurs == null %}
+            <span>Choisisez un formateur: Aucun formateur disponible</span>
+        {% else %}
+        <form action="{{path('add_formateur_to_session', {'id': session.id})}}" method="post">
+            <label for="formateur">Choisissez un formateur</label>
+            <select name="formateur" id="formateur">
+                {% for formateur in formateurs %}
+                    <option value="{{ formateur.id }}">{{formateur.prenom}}&nbsp;{{formateur.nom}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" name="submit">
+        </form>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

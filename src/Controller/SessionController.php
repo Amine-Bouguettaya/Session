@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Module;
 use App\Entity\Session;
 use App\Entity\Programme;
@@ -84,6 +85,18 @@ final class SessionController extends AbstractController
         return false;
     }
 
+    #[Route('/session/addFormateur/{id}', name:'add_formateur_to_session')]
+    public function addFormateurToSession(Session $session, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $userId = $request->request->get('formateur');
+        $user = $entityManager->getRepository(User::class)->find($userId);
+
+        $session->setFormateur($user);
+        $entityManager->persist($session);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('show_session', ['id' => $session->getId()]);
+    }
 
     #[Route('/session/{id}/addModule', name: 'addmoduletosession')]
     public function addModuleToSession(Session $session, Request $request, EntityManagerInterface $entityManager): Response
@@ -125,23 +138,44 @@ final class SessionController extends AbstractController
         return $diff->days;
     }
 
+
     #[Route('/session/{id}', name:'show_session')]
     public function show($id, EntityManagerInterface $entityManager): Response
     {
         $session = $entityManager->getRepository(Session::class)->find($id);
-
         if ($session == null) {
             return $this->redirectToRoute('app_home');
         }
 
         $nonInscrits = $entityManager->getRepository(Session::class)->findNonInscrits($session->getId());
         $modulesnotinsession = $entityManager->getRepository(Session::class)->findModulesNotInSession($session->getId());
+        $formateurs =  $this->findAllFormateur($session, $entityManager);
 
         return $this->render('session/show.html.twig', [
             'session' => $session,
             'nonInscrits' => $nonInscrits,
             'modulesnotinsession' => $modulesnotinsession,
+            'formateurs' => $formateurs
         ]);
+    }
+
+    public function findAllFormateur(Session $session, EntityManagerInterface $entityManager) 
+    {
+        $users = $entityManager->getRepository(User::class)->findAll();
+        $formateurs = [];
+        $i = 0;
+
+        foreach ($users as $user) {
+            foreach ($user->getRoles() as $role) {
+                if ($role == "ROLE_FORMATEUR") {
+                    if ($session->getFormateur() == null || $session->getFormateur()->getId() != $user->getId()) {
+                        $formateurs[$i] = $user;
+                        $i += 1;
+                    }
+                }
+            }
+        }
+        return $formateurs;
     }
 
     #[Route('/session/{id}/delete', name: 'delete_session')]

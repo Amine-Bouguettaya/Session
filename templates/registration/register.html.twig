@@ -9,7 +9,7 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
     {% for message in app.flashes('error') %}
-    <div class="text-red-500 bg-red-100 p-2 mb-4 rounded">
+    <div class="message text-red-500 bg-red-100 p-2 mb-4 rounded">
         {{ message }}
     </div>
 {% endfor %}

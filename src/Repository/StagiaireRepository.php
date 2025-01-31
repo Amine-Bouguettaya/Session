@@ -16,6 +16,19 @@ class StagiaireRepository extends ServiceEntityRepository
         parent::__construct($registry, Stagiaire::class);
     }
 
+    public function search($nom)
+    {
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
+
+        $qb = $sub;
+
+        $qb->select('s')
+        ->from('App\Entity\Stagiaire', 's')
+        ->where('se.nom = :nom');
+
+    }
+
     //    /**
     //     * @return Stagiaire[] Returns an array of Stagiaire objects
     //     */

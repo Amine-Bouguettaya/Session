@@ -43,6 +43,9 @@ class Session
     #[ORM\ManyToMany(targetEntity: Stagiaire::class, inversedBy: 'sessions', cascade: ['persist'])]
     private Collection $stagiaires;
 
+    #[ORM\ManyToOne(inversedBy: 'sessions')]
+    private ?User $formateur = null;
+
     public function __construct()
     {
         $this->programmes = new ArrayCollection();
@@ -171,5 +174,17 @@ class Session
     public function __toString(): string
     {
         return $this->nameSession;
+    }
+
+    public function getFormateur(): ?User
+    {
+        return $this->formateur;
+    }
+
+    public function setFormateur(?User $formateur): static
+    {
+        $this->formateur = $formateur;
+
+        return $this;
     }
 }
