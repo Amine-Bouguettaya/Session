@@ -16,7 +16,7 @@ class StagiaireRepository extends ServiceEntityRepository
         parent::__construct($registry, Stagiaire::class);
     }
 
-    public function search($nom)
+    public function search($nomprenom)
     {
         $em = $this->getEntityManager();
         $sub = $em->createQueryBuilder();
@@ -25,7 +25,10 @@ class StagiaireRepository extends ServiceEntityRepository
 
         $qb->select('s')
         ->from('App\Entity\Stagiaire', 's')
-        ->where('se.nom = :nom');
+        ->where('s.nom LIKE :nomprenom OR s.prenom LIKE :nomprenom')
+        ->setParameter('nomprenom', '%' . $nomprenom . '%')
+        ->getQuery()
+        ->getResult();
 
     }
 

@@ -60,9 +60,17 @@ final class StagiaireController extends AbstractController
     #[Route('/stagiaire/search', name:'searchstagiaire')]
     public function searchStagiaire(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $recherche = $request->request->get('text');
 
+        $recherche = $request->request->get('text');
         
+        var_dump($recherche);
+        die;
+
+        $stagiaires = $entityManager->getRepository(Stagiaire::class)->search($recherche);
+        
+        return $this->render('stagiaire/searchstagiaire.html.twig', [
+            'stagiaires' => $stagiaires,
+        ]);
     }
 
     #[Route('/stagiaire/{id}', name:'show_stagiaire')]

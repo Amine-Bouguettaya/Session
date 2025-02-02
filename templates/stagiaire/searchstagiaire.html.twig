@@ -1,22 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello StagiaireController!{% endblock %}
+{% block title %}Ajouter une categorie{% endblock %}
 
 {% block body %}
 
+
     <div class="flex flex-col m-8">
+        <h1 class="pb-6 text-2xl font-weight-normal text-[#292D34]">Resultat de la Recherche</h1>
 
-
-        <div id="search">
-            <form action="{{ path('searchstagiaire') }}" method="post">
-                <input type="text" name="text" placeholder="Rechercher...">
-                <input  type="submit" class="bg-gray-700 text-white p-1 rounded-md" value="Rechercher">
-            </form>
-        </div>
-
-        <a href=" {{ path('new_stagiaire') }} " class="bg-gray-700 text-white p-1 rounded-md w-24 my-3">Ajouter un stagiaire</a>
-
-        <h1 class="pb-6 text-2xl font-weight-normal text-[#292D34]">Liste des stagiaire</h1>
+        {% if stagiaires is empty %}
+            <p class="text-gray-600">Aucun stagiaire trouvé.</p>
+        {% else %}
 
         <div class ="flex flex-row gap-3 mb-4">
             {% for  stagiaire in stagiaires%}
@@ -30,4 +24,6 @@
             {% endfor %}
         </div>
     </div>
+    {% endif %}
+</div>
 {% endblock %}
