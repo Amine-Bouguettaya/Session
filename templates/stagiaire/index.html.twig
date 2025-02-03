@@ -7,19 +7,24 @@
     <div class="flex flex-col m-8">
 
 
-        <div id="search">
-            <form action="{{ path('searchstagiaire') }}" method="post">
+        {{form(formsearch)}}
+
+        {# <div id="search">
+
+            <form action="{{path('searchstagiaire')}}" method="POST">
+                <label for="text">Recherchez un stagiaire</label>
                 <input type="text" name="text" placeholder="Rechercher...">
                 <input  type="submit" class="bg-gray-700 text-white p-1 rounded-md" value="Rechercher">
             </form>
-        </div>
+
+        </div> #}
 
         <a href=" {{ path('new_stagiaire') }} " class="bg-gray-700 text-white p-1 rounded-md w-24 my-3">Ajouter un stagiaire</a>
 
         <h1 class="pb-6 text-2xl font-weight-normal text-[#292D34]">Liste des stagiaire</h1>
 
         <div class ="flex flex-row gap-3 mb-4">
-            {% for  stagiaire in stagiaires%}
+            {% for  stagiaire in stagiaires %}
                 <div class="flex flex-col bg-white rounded-md shadow-md p-2">
                     <span> {{stagiaire.nom}}&nbsp;{{stagiaire.prenom}}</span>
                     <span>{{stagiaire.email}}</span>
@@ -29,5 +34,6 @@
                 </div>
             {% endfor %}
         </div>
+
     </div>
 {% endblock %}

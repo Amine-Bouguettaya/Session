@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Stagiaire;
 use App\Form\StagiaireType;
+use App\Form\SearchStagiaireType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,13 +13,58 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class StagiaireController extends AbstractController
 {
+    // #[Route('/stagiaire', name: 'app_stagiaire')]
+    // public function index(Request $request, EntityManagerInterface $entityManager): Response
+    // {
+    //     $stagiaires = $entityManager->getRepository(Stagiaire::class)->findAll();
+
+    //     $form = $this->createForm(SearchStagiaireType::class);
+    //     $form->handleRequest($request);
+
+
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $recherche = $form->getData('text');
+
+    //         return $this->redirectToRoute('displaysearch', ["recherche" => $recherche['text']]);
+    //     }
+
+    //     return $this->render('stagiaire/index.html.twig', [
+    //         'stagiaires' => $stagiaires,
+    //         'formsearch' => $form,
+    //     ]);
+    // }
+
+    // #[Route('/stagiaire/search/{recherche}', name:'displaysearch')]
+    // public function searchStagiaire($recherche, EntityManagerInterface $entityManager)
+    // {
+
+    //     // $recherche = $request->request()->get('text');
+    //     $stagiaires = $entityManager->getRepository(Stagiaire::class)->search($recherche);
+    //     // var_dump($recherche);
+
+    //     return $this->render('stagiaire/searchstagiaire.html.twig', [
+    //         'stagiaires' => $stagiaires,
+    //     ]);
+    // }
+
+
     #[Route('/stagiaire', name: 'app_stagiaire')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index( Request $request, EntityManagerInterface $entityManager): Response
     {
-        $stagiaires = $entityManager->getRepository(Stagiaire::class)->findAll();
+
+        $form = $this->createForm(SearchStagiaireType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $recherche = $form->getData();
+            $stagiaires = $entityManager->getRepository(Stagiaire::class)->search($recherche['text']);
+        } else {
+            $stagiaires = $entityManager->getRepository(Stagiaire::class)->findAll();
+        }
 
         return $this->render('stagiaire/index.html.twig', [
             'stagiaires' => $stagiaires,
+            'formsearch' => $form,
         ]);
     }
 
@@ -54,22 +100,6 @@ final class StagiaireController extends AbstractController
         return $this->render('stagiaire/newedit.html.twig', [
             'formAddStagiaire' => $form,
             'edit' => $stagiaire->getId(),
-        ]);
-    }
-
-    #[Route('/stagiaire/search', name:'searchstagiaire')]
-    public function searchStagiaire(Request $request, EntityManagerInterface $entityManager): Response
-    {
-
-        $recherche = $request->request->get('text');
-        
-        var_dump($recherche);
-        die;
-
-        $stagiaires = $entityManager->getRepository(Stagiaire::class)->search($recherche);
-        
-        return $this->render('stagiaire/searchstagiaire.html.twig', [
-            'stagiaires' => $stagiaires,
         ]);
     }
 

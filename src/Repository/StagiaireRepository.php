@@ -30,6 +30,9 @@ class StagiaireRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
+        $query = $qb->getQuery();
+
+        return $query->getResult();
     }
 
     //    /**
